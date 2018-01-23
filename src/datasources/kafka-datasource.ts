@@ -14,7 +14,7 @@ export class KafkaDatasource {
   private outputFolder: string;
 
   constructor(private folder: string, private options: ICommandLineOptions) {
-    let topics = options.config.consumeTopics ? Object.keys(options.config.consumeTopics) : 'default';
+    let topics = options.config.consume ? Object.keys(options.config.consume) : 'default';
     if (options.hasOwnProperty('debugMode')) this.debugMode = options.config.debugMode;
 
     this.outputFolder = path.resolve(folder);
@@ -31,7 +31,7 @@ export class KafkaDatasource {
     }
 
     const Offset = Kafka.Offset;
-    this.client = new Kafka.Client(options.config.zookeeperUrl, options.config.clientID);
+    this.client = new Kafka.Client(options.config.kafkaHost, options.config.clientID);
     this.offset = new Offset(this.client);
     (<any>this.offset).fetchLatestOffsets(topics, (error, offsets) => this.processOffsets(error, offsets, 1));
   }
@@ -87,7 +87,7 @@ export class KafkaDatasource {
    * @memberOf Router
    */
   private saveMessage(message: IKafkaMessage) {
-    let ext = this.options.config.consumeTopics[message.topic];
+    let ext = 'geojson';
     let filename = path.join(this.outputFolder, message.topic + '.' + ext);
     if (this.options.config.debugMode) console.log(`Received message, saving to ${filename}.`);
     fs.writeFile(filename, message.value, (err) => {

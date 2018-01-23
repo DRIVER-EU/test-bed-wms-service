@@ -1,14 +1,15 @@
 {
   "name": "wms_lite",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "A Mapnik-based WMS service that watches a folder with GeoJSON files and publishes them as WMS. Each GeoJSON file that is served needs to have a Mapnik XML configuration, as can be seen in the styles folder. Besides support for WMS v1.1.1, it also offers support for accessing files as tile layer, e.g. http://HOST:PORT/LAYERNAMES/zoom/x/y.png",
   "main": "index.js",
   "scripts": {
+    "start": "node ./bin/run.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
     "wms_lite": "./bin/run.js"
-  }, 
+  },
   "keywords": [
     "wms",
     "wmts",
@@ -18,16 +19,24 @@
   "author": "Erik Vullings <erik.vullings@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "chokidar": "^1.6.1",
+    "@types/bluebird": "^3.5.19",
+    "@types/geojson": "^7946.0.0",
+    "@types/kafka-node": "^2.0.4",
+    "@types/node": "^9.3.0",
+    "@types/winston": "^2.3.7",
+    "chokidar": "^2.0.0",
     "command-line-args": "^3.0.1",
-    "command-line-usage": "^3.0.4",
-    "kafka-node": "^1.0.1",
-    "mapnik": "^3.5.14",
+    "command-line-usage": "^4.1.0",
+    "geojson": "^0.5.0",
+    "kafka-node": "https://github.com/rinzeb/kafka-node#7dcbcde2279576611f41dd10e945711d429d50ca",
+    "mapnik": "^3.6.2",
+    "node-test-bed-adapter": "^0.1.3",
+    "underscore": "^1.8.3",
     "url": "^0.11.0",
-    "winston": "^2.2.0"
+    "winston": "^2.4.0"
   },
   "devDependencies": {
-    "typescript": "^2.0.3",
-    "typings": "^1.4.0"
+    "typescript": "^2.6.2",
+    "typings": "^2.1.1"
   }
 }

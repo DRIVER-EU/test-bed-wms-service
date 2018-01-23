@@ -1,3 +1,6 @@
+import { SchemaRegistry } from "node-test-bed-adapter/dist/lib/avro/schema-registry";
+import { OffsetFetchRequest } from "kafka-node";
+
 /**
  * Configuration file
  * 
@@ -19,7 +22,7 @@ export interface IConfig {
    * @type {string}
    * @memberOf IConfig
    */
-  zookeeperUrl: string;
+  kafkaHost: string;
   /**
    * Server port
    * 
@@ -40,7 +43,9 @@ export interface IConfig {
    * @type {{ [topic: string]: string }}
    * @memberOf IConfig
    */
-  consumeTopics: { [topic: string]: string; }
+  consume?: OffsetFetchRequest[];
+  schemaRegistry: string;
+  fetchAllSchemas: boolean;
 }
 
 export interface IWmsDescription {

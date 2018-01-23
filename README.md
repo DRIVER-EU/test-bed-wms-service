@@ -47,7 +47,7 @@ Options
   -k, --useKafka Use Kafka datasource   If true, use Kafka as a datasource.
   -f, --folder Input folder             Use a folder for the files (default ./data).
   -s, --styleFolder Style folder        Folder for the style files (default ./styles).
-  -p, --port Server port                Port for the server to use (default 5432).
+  -p, --port Server port                Port for the server to use (default 3355).
   -c, --concurrency Concurrency         Number of concurrent Mapnik maps (default 10).
   -b, --bufferSize Buffer size          Buffer size around map tiles (default 0).
   -a, --palette Palette file            Used by Mapnik.

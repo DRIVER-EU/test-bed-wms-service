@@ -1,22 +1,23 @@
 import * as winston from 'winston';
 import * as fs from 'fs';
 import * as path from 'path';
-import { EventEmitter } from 'events';
-import { ICommandLineOptions } from './cli';
-import { IDatasource } from './models/datasource';
-import { FolderDatasource } from './datasources/folder-datasource';
-import { KafkaDatasource } from './datasources/kafka-datasource';
-import { Renderer } from './renderer';
-import { IWmsQuery } from './models/wms-query';
-import { StyleGenerator } from './styles/style-generator';
-import { WmsGetCapbilities } from './models/wms-get-capabilities';
+import {EventEmitter} from 'events';
+import {ICommandLineOptions} from './cli';
+import {IDatasource} from './models/datasource';
+import {FolderDatasource} from './datasources/folder-datasource';
+import {ITestBedOptions, LogLevel} from 'node-test-bed-adapter';
+import {Consumer} from './datasources/consumer';
+import {Renderer} from './renderer';
+import {IWmsQuery} from './models/wms-query';
+import {StyleGenerator} from './styles/style-generator';
+import {WmsGetCapbilities} from './models/wms-get-capabilities';
 const mapnik = require('mapnik');
 
 export class Router {
   // A dictionary of renderers, each for one particular style.
-  private renderers: { [key: string]: { renderer: Renderer; time: Date; } };
-  private kafkaDatasource: KafkaDatasource;
+  private renderers: {[key: string]: {renderer: Renderer; time: Date}};
   private styleGenerator: StyleGenerator;
+  private kafkaConsumer: Consumer;
   private dataSources: IDatasource[];
   private palette;
 
@@ -29,14 +30,27 @@ export class Router {
       folderService.on('fileChange', effect => this.processFileChanged(effect));
       folderService.process((err: NodeJS.ErrnoException, datasources?: IDatasource[]) => {
         if (err || !datasources) {
-            console.log(JSON.stringify(err));
-            throw err;
+          console.log(JSON.stringify(err));
+          throw err;
         }
         this.dataSources = datasources;
       });
 
       if (options.useKafka) {
-        this.kafkaDatasource = new KafkaDatasource(options.folder, options);
+        let kafkaConfig: ITestBedOptions = {
+          kafkaHost: options.config.kafkaHost,
+          schemaRegistry: options.config.schemaRegistry,
+          fetchAllSchemas: options.config.fetchAllSchemas,
+          clientId: options.config.clientID,
+          consume: options.config.consume,
+          logging: {
+            logToConsole: LogLevel.Info,
+            logToFile: LogLevel.Debug,
+            logToKafka: LogLevel.Info,
+            logFile: 'log.txt'
+          }
+        };
+        this.kafkaConsumer = new Consumer(kafkaConfig, options.folder);
       }
     }
 
@@ -47,13 +61,13 @@ export class Router {
    * Process the effects of a file change.
    * - Update the available datasources
    * - Delete all existing renderers that use this file, so a new one will be created the next time.
-   * 
+   *
    * @private
    * @param {({ datasource: IDatasource, change: 'add' | 'remove' | 'change'})} change
-   * 
+   *
    * @memberOf Router
    */
-  private processFileChanged(effect: { datasource: IDatasource, change: 'add' | 'remove' | 'change' }) {
+  private processFileChanged(effect: {datasource: IDatasource; change: 'add' | 'remove' | 'change'}) {
     let title = effect.datasource.title;
     let layerID = effect.datasource.layerID;
     switch (effect.change) {
@@ -61,7 +75,11 @@ export class Router {
         this.dataSources.push(effect.datasource);
         break;
       case 'change':
-        if (!this.dataSources.some(ds => { return ds.title === title;})) {
+        if (
+          !this.dataSources.some(ds => {
+            return ds.title === title;
+          })
+        ) {
           this.dataSources.push(effect.datasource);
         }
         break;
@@ -87,13 +105,13 @@ export class Router {
     }
     try {
       let svc = this.renderers[layers];
-      if (!svc.renderer) return cb(new Error(`Couldn't create renderer - missing stylesheet.`)); 
+      if (!svc.renderer) return cb(new Error(`Couldn't create renderer - missing stylesheet.`));
       svc.time = new Date();
       svc.renderer.render(query, cb);
     } catch (err) {
       let msg = `Error rendering map: ${err.message}!`;
       console.error(msg);
-      cb(new Error(msg))
+      cb(new Error(msg));
     }
   }
 
@@ -112,9 +130,9 @@ export class Router {
 
   /**
    * Respond to a WMS getCapabilities request
-   * 
+   *
    * @returns
-   * 
+   *
    * @memberOf Router
    */
   public getCapabilities() {
@@ -122,6 +140,6 @@ export class Router {
   }
 
   public close() {
-    if (this.kafkaDatasource) this.kafkaDatasource.close();
+    if (this.kafkaConsumer) this.kafkaConsumer.close();
   }
 }

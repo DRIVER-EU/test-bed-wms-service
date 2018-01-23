@@ -92,7 +92,7 @@ export class CommandLineInterface {
     { name: 'useKafka', alias: 'k', type: Boolean, multiple: false, typeLabel: '[underline]{Use Kafka datasource}', description: 'If true, use Kafka as a datasource.' },
     { name: 'folder', alias: 'f', type: String, multiple: false, typeLabel: '[underline]{Input folder}', description: 'Use a folder for the files (default ./data).' },
     { name: 'styleFolder', alias: 's', type: String, multiple: false, typeLabel: '[underline]{Style folder}', description: 'Folder for the style files (default ./styles).' },
-    { name: 'port', alias: 'p', type: Number, multiple: false, typeLabel: '[underline]{Server port}', description: 'Port for the server to use (default 5432).' },
+    { name: 'port', alias: 'p', type: Number, multiple: false, typeLabel: '[underline]{Server port}', description: 'Port for the server to use (default 3355).' },
     { name: 'concurrency', alias: 'c', type: Number, multiple: false, typeLabel: '[underline]{Concurrency}', description: 'Number of concurrent Mapnik maps (default 10).' },
     { name: 'bufferSize', alias: 'b', type: Number, multiple: false, typeLabel: '[underline]{Buffer size}', description: 'Buffer size around map tiles (default 0).' },
     { name: 'palette', alias: 'a', type: String, multiple: false, typeLabel: '[underline]{Palette file}', description: 'Used by Mapnik.' },
@@ -122,7 +122,7 @@ if (options.help) {
 if (!options || typeof options !== 'object') options = <ICommandLineOptions>{};
 options.folder = options.folder ? path.resolve(options.folder) : path.resolve('data');
 options.styleFolder = options.styleFolder ? path.resolve(options.styleFolder) : path.resolve('styles');
-if (!options.port) options.port = 5432;
+if (!options.port) options.port = 3355;
 options.last = options.last ? +options.last : 0;
 if (!options.palette) options.palette = path.resolve('palette.act');
 if (!options.concurrency) options.concurrency = 10;

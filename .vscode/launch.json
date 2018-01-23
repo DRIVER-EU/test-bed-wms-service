@@ -10,7 +10,7 @@
       "request": "launch",
       "args": [
         "-p",
-        "5101",
+        "3355",
         "-b",
         "32",
         "-k"
@@ -20,8 +20,8 @@
       "outDir": "${workspaceRoot}\\dist",
       "env": {
         "NODE_ENV": "development",
-        "GDAL_DATA": "c:/Program Files/QGIS 2.16/share/epsg_csv",
-        "PROJ_LIB": "C:/dev/apps/data-hub/sw/wms-lite/nad"
+        "GDAL_DATA": "c:\\Program Files\\QGIS 2.16\\share\\epsg_csv",
+        "PROJ_LIB": "C:\\dev\\apps\\DRIVER\\test-bed-wms-service\\nad"
       }
     },
     {
