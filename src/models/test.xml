@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WMS_Capabilities version="1.3.0" xmlns="http://www.opengis.net/wms"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opengis.net/wms http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd">
+    <Service>
+        <Name>WMS</Name>
+        <Title>TNO WMS service</Title>
+        <Abstract>A WMS service for crisis management</Abstract>
+        <KeywordList>
+            <Keyword>WMS</Keyword>
+            <Keyword>Crisis management</Keyword>
+            <Keyword>Kafka</Keyword>
+        </KeywordList>
+        <OnlineResource xlink:href="http://169.254.80.80" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+        <ContactInformation>
+            <ContactPersonPrimary>
+                <ContactPerson>Erik Vullings</ContactPerson>
+                <ContactOrganization>TNO</ContactOrganization>
+            </ContactPersonPrimary>
+            <ContactPosition>Senior Systems Integrator</ContactPosition>
+            <ContactAddress>
+                <AddressType>postal</AddressType>
+                <Address>Oude Waalsdorperweg 63</Address>
+                <City>The Hague</City>
+                <StateOrProvince>Holland</StateOrProvince>
+                <PostCode>2563AK</PostCode>
+                <Country>The Netherlands</Country>
+            </ContactAddress>
+            <ContactVoiceTelephone>06-1234567</ContactVoiceTelephone>
+            <ContactElectronicMailAddress>Erik.Vullings@TNO.nl</ContactElectronicMailAddress>
+        </ContactInformation>
+        <Fees>NONE</Fees>
+        <AccessConstraints>Geen Beperkingen</AccessConstraints>
+    </Service>
+    <Capability>
+        <Request>
+            <GetCapabilities>
+                <Format>application/vnd.ogc.wms_xml</Format>
+                <DCPType>
+                    <HTTP>
+                        <Get>
+                            <OnlineResource xlink:href="http://169.254.80.80:5425" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+                        </Get>
+                    </HTTP>
+                </DCPType>
+            </GetCapabilities>
+            <GetMap>
+                <Format>image/png</Format>
+                <DCPType>
+                    <HTTP>
+                        <Get>
+                            <OnlineResource xlink:href="http://169.254.80.80:5425" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+                        </Get>
+                    </HTTP>
+                </DCPType>
+            </GetMap>
+        </Request>
+        <Exception>
+            <Format>application/vnd.ogc.se_xml</Format>
+            <Format>application/vnd.ogc.se_inimage</Format>
+            <Format>application/vnd.ogc.se_blank</Format>
+        </Exception>
+        <Layer>
+            <Title>TNO WMS service</Title>
+            <Abstract>A WMS service for crisis management</Abstract><!--Limited list of EPSG projections:--><KeywordList/>
+            <CRS>EPSG:25831</CRS>
+            <CRS>EPSG:25832</CRS>
+            <CRS>EPSG:4326</CRS>
+            <BoundingBox CRS="EPSG:4326" minx="3.1983876629326096" miny="50.67199330930464" maxx="7.276276007218319" maxy="53.611058210234226"/>
+            <BoundingBox CRS="EPSG:25831" minx="513125.1294499418" miny="5613369.109225448" maxx="802120.1394259091" maxy="5948752.645041717"/>
+            <BoundingBox CRS="EPSG:25832" minx="90177.80192610662" miny="5614767.760183974" maxx="385965.1579375231" maxy="5955907.673148672"/>
+            <AuthorityURL name="TNO">
+                <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.tno.nl"/>
+            </AuthorityURL>
+            <Layer queryable="0" opaque="0">
+                <Name>0</Name>
+                <Title>Erik</Title>
+                <Abstract/>
+                <KeywordList/>
+                <CRS>EPSG:4326</CRS>
+                <EX_GeographicBoundingBox>
+                    <westBoundLongitude>-71.63</westBoundLongitude>
+                    <eastBoundLongitude>-70.78</eastBoundLongitude>
+                    <southBoundLatitude>41.75</southBoundLatitude>
+                    <northBoundLatitude>42.90</northBoundLatitude>
+                </EX_GeographicBoundingBox>
+                <BoundingBox CRS="EPSG:4326" minx="3.1983876629326096" miny="50.67199330930464" maxx="7.276276007218319" maxy="53.611058210234226"/>
+                <BoundingBox CRS="EPSG:25831" minx="513125.1294499418" miny="5613369.109225448" maxx="802120.1394259091" maxy="5948752.645041717"/>
+                <BoundingBox CRS="EPSG:25832" minx="90177.80192610662" miny="5614767.760183974" maxx="385965.1579375231" maxy="5955907.673148672"/>
+            </Layer>
+        </Layer>
+    </Capability>
+</WMS_Capabilities>

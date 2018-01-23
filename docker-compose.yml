@@ -1,0 +1,12 @@
+---
+version: '2'
+services:
+  wmsserver:
+    build: https://github.com/DRIVER-EU/test-bed-wms-service.git#0.0.1
+    hostname: wmsserver
+    ports:
+      - "3355:3355"
+    volumes:
+      - ./mbtiles/:/src/mbtiles/
+    environment:
+      MBTILES_PORT: '3355'

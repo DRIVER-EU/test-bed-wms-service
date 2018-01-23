@@ -1,0 +1,49 @@
+{
+  "debugMode": true,
+  "wmsDescription": {
+    "title": "TNO WMS service",
+    "abstract": "A WMS service for crisis management",
+    "keywords": ["WMS", "Crisis management", "Kafka"],
+    "boundaryBox": "      <LatLonBoundingBox maxy=\"7.273103484702655\" maxx=\"53.56324764934842\" miny=\"50.671799068129744\" minx=\"3.199769363476108\"/>\n      <BoundingBox SRS=\"EPSG:4326\" minx=\"3.1983876629326096\" miny=\"50.67199330930464\" maxx=\"7.276276007218319\" maxy=\"53.611058210234226\"/>\n      <BoundingBox SRS=\"EPSG:28992\" minx=\"198.35995763429673\" miny=\"297982.12118999794\" maxx=\"288467.017801902\" maxy=\"627198.177920129\"/>\n      <BoundingBox SRS=\"EPSG:3857\" minx=\"356196\" miny=\"6563442\" maxx=\"809638\" maxy=\"7087870\"/>",
+    "contact": {
+      "person": "Erik Vullings",
+      "organization": "TNO",
+      "position": "Senior Systems Integrator",
+      "address": "Oude Waalsdorperweg 63",
+      "city": "The Hague",
+      "state": "Holland",
+      "postcode": "2563AK",
+      "country": "The Netherlands",
+      "telephone": "06-12345678",
+      "email": "Erik.Vullings@TNO.nl"
+    },
+    "authority": {
+      "name": "TNO",
+      "url": "http://www.tno.nl"
+    }
+  },
+  "zookeeperUrl": "217.169.227.210:3333",
+  "clientID": "kafka2wms",
+  "consumeTopics": {
+    "team.team1.ambulanceposten": "geojson",
+    "team.team1.antenna": "geojson",
+    "team.team1.brandweer": "geojson",
+    "team.team1.brzo": "geojson",
+    "team.team1.c2000": "geojson",
+    "team.team1.care": "geojson",
+    "team.team1.cure": "geojson",
+    "team.team1.gemeentehuizen": "geojson",
+    "team.team1.politie": "geojson",
+    "team.team1.power": "geojson",
+    "team.team1.pumps": "geojson",
+    "team.team1.roads": "geojson",
+    "team.team1.rwzi": "geojson",
+    "team.team1.watercontouren": "geojson",
+    "lcms.actual.1": "geojson",
+    "lcms.actual.2": "geojson",
+    "lcms.actual.3": "geojson",
+    "gps.actual": "geojson",
+    "cosetec.actual": "geojson",
+    "mines.actual": "geojson"
+  }    
+}

@@ -1,0 +1,10 @@
+{
+  "globalDependencies": {
+    "kafka-node": "registry:dt/kafka-node#0.2.22+20160724073224",
+    "node": "registry:dt/node#6.0.0+20160919063032",
+    "winston": "registry:dt/winston#0.0.0+20161006194546"
+  },
+  "dependencies": {
+    "chokidar": "registry:npm/chokidar#1.6.0+20160817083815"
+  }
+}

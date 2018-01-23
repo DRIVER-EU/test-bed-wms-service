@@ -1,0 +1,46 @@
+<Style name="gps-label" filter-mode="first">
+  <Rule>
+    <MaxScaleDenominator>12500</MaxScaleDenominator>
+    <TextSymbolizer fontset-name="fontset-0" fill="#444444" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" size="12" dy="18">
+      <![CDATA[[Name]]]>
+    </TextSymbolizer>
+  </Rule>
+</Style>
+<Style name="lcms" filter-mode="first">
+  <Rule>
+    <Filter>([mapnik::geometry_type] = point)</Filter>
+    <MarkersSymbolizer width="32" allow-overlap="true" ignore-placement="true" file="../icons/lcms/[icon]" />
+    <LineSymbolizer stroke-width="2" stroke="#442266" />
+  </Rule>
+  <Rule>
+    <Filter>([mapnik::geometry_type] = polygon)</Filter>
+    <PolygonSymbolizer fill="#ff0000" fill-opacity="0.5" />
+    <LineSymbolizer stroke-width="2" stroke="#442266" />
+  </Rule>
+  <Rule>
+    <LineSymbolizer stroke-width="2" stroke="#442266" />
+  </Rule>
+</Style>
+<Layer name="lcms" srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs">
+  <StyleName>lcms</StyleName>
+  <Datasource>
+    <Parameter name="file">
+      <![CDATA[{{FILENAME}}]]>
+    </Parameter>
+    <Parameter name="layer">
+      <![CDATA[OGRGeoJSON]]>
+    </Parameter>
+    <Parameter name="type">
+      <![CDATA[lcms]]>
+    </Parameter>
+    <Parameter name="project">
+      <![CDATA[{{STYLENAME}}]]>
+    </Parameter>
+    <Parameter name="srs">
+      <![CDATA[+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over]]>
+    </Parameter>
+    <Parameter name="type">
+      <![CDATA[ogr]]>
+    </Parameter>
+  </Datasource>
+</Layer>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>wms-lite</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, #map {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        var map = new L.Map('map');  
+
+        var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        });        
+        var wmts = L.tileLayer('http://localhost:5101/team.team1.watercontouren/{z}/{x}/{y}.png', {
+            maxZoom: 22,
+            attribution: '&copy; Erik Vullings'
+        });        
+        var wms = L.tileLayer.wms("http://127.0.0.1:5101/", {
+            layers: 'team.team1.watercontouren',
+            format: 'image/png',
+            transparent: true,
+            attribution: "Node WMS server",
+            detectRetina: true
+        });
+        map.setView(new L.LatLng(52.4, 4.75), 12)
+            .addLayer(osm)
+            //.addLayer(wmts)
+            .addLayer(wmts);
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<Style name="watercontouren" filter-mode="first">
+  <Rule>
+    <Filter>([v] &gt;= 3)</Filter>
+    <PolygonSymbolizer fill="#0f5e9c" fill-opacity="0.5" />
+  </Rule>
+  <Rule>
+    <Filter>([v] &gt;= 2)</Filter>
+    <PolygonSymbolizer fill="#2389da" fill-opacity="0.5" />
+  </Rule>
+  <Rule>
+    <Filter>([v] &gt;= 1)</Filter>
+    <PolygonSymbolizer fill="#1ca3ec" fill-opacity="0.5" />
+  </Rule>
+  <Rule>
+    <Filter>([v] &gt;= 0.5)</Filter>
+    <PolygonSymbolizer fill="#5abcd8" fill-opacity="0.5" />
+  </Rule>
+  <Rule>
+    <Filter>([v] &gt;= 0.2)</Filter>
+    <PolygonSymbolizer fill="#74ccf4" fill-opacity="0.5" />
+  </Rule>
+  <Rule>
+    <PolygonSymbolizer fill-opacity="0.5" fill="#aaee88" />
+  </Rule>
+</Style>
+<Layer name="watercontouren" srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs">
+  <StyleName>watercontouren</StyleName>
+  <Datasource>
+    <Parameter name="file">
+      <![CDATA[{{FILENAME}}]]>
+    </Parameter>
+    <Parameter name="layer">
+      <![CDATA[OGRGeoJSON]]>
+    </Parameter>
+    <Parameter name="type">
+      <![CDATA[ogr]]>
+    </Parameter>
+  </Datasource>
+</Layer>
