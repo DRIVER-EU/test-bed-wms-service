@@ -1,11 +1,11 @@
-FROM node:alpine
+FROM node:8-alpine
 
 # Create app directory
 RUN mkdir -p /src
 WORKDIR /src
 
 # If you have native dependencies, you'll need extra tools
-RUN apk add --no-cache make gcc g++ python git
+RUN apk add --no-cache make gcc g++ python git libc6-compat
 RUN npm install -g node-gyp typescript bower
 
 # Install app dependencies
