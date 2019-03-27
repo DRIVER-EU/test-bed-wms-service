@@ -1,8 +1,8 @@
-# WMS-LITE
+# Test-bed WMS-service
 
-WMS-LITE is a simple NODE (v4.5) service that you can easily run locally and which serves a folder of GIS files as WMS v1.1.1. When a file is changed, the map will be renewed on the next refresh. Besides being a WMS server, it can also act as a tile services, serving tiles using the slippy map tile layer protocol (http://HOST:PORT/layer1,layer2,layer3/zoom/x/y.png). Furthermore, an Apache Kafka connector can be enabled, which can extract files from Kafka and save them in the local data folder.
+WMS-LITE is a simple NODE (v8) service that you can easily run locally and which serves a folder of GIS files as WMS v1.1.1. When a file is changed, the map will be renewed on the next refresh. Besides being a WMS server, it can also act as a tile services, serving tiles using the slippy map tile layer protocol (http://HOST:PORT/layer1,layer2,layer3/zoom/x/y.png). Furthermore, an Apache Kafka connector can be enabled to connect to the DRIVER+ testbed, which can extract files from configured topics and save them in the local data folder.
 
-Each GIS file that is served needs to have a specific Mapnik XML configuration: For examples, see the styles folder.
+Each GIS file that is served needs to have a specific Mapnik XML configuration: For examples, see the styles folder. Otherwise, a default style will be used.
 
 # Installation
 
@@ -14,7 +14,7 @@ tsc
 npm link
 ```
 
-Run `wms_lite -?` to see the command line options. 
+Run `test-bed-wms-service -?` to see the command line options. 
 
 See the required environment settings in launch.json 
 - "GDAL_DATA": "c:/Program Files/QGIS 2.16/share/epsg_csv" (I use the version from QGIS),
@@ -54,7 +54,7 @@ Options
 ```
 
 # Run example
-Start using `wms_lite -p 5101` or `node dist/run.js -p 5101`. 
+Start using `test-bed-wms-service -p 5101` or `node dist/run.js -p 5101`. 
 Run a local leaflet by starting `cd demo && lite-server` (assuming you have `lite-server` installed locally. Otherwise, install it using `npm i -g lite-server`.
 
 # TODO
@@ -80,7 +80,7 @@ Start the image interactively with
 docker run -p 5101:5101 -v C:\dev\projects\DRIVER\wms-test-bed-adapter\src:/code/src -it --rm wms-server-dev /bin/sh
 ```
 Then run the command ```tsc -w``` in this container to build and watch the source code. 
-To run the code:
+To run the compiled code, run in the docker container:
 ```
 node dist/cli -t -f demo -e "http://localhost" -q 5101
 ```

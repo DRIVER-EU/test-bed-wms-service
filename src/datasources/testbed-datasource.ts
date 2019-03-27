@@ -1,11 +1,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as Kafka from 'kafka-node';
 import {IConfig} from '../models/config';
 import {IKafkaMessage} from '../models/kafka_message';
 import {ICommandLineOptions} from '../cli';
 import {TestBedAdapter, ITestBedOptions, IAdapterMessage} from 'node-test-bed-adapter';
 import {INamedGeoJSON} from '../models/named-geojson';
+import {FeatureCollection} from 'geojson';
 
 const log = console.log.bind(console),
   log_error = console.error.bind(console);
@@ -101,7 +101,22 @@ export class TestbedDatasource {
     console.log(`Received geojson`);
     const msg: INamedGeoJSON = message.value as INamedGeoJSON;
     const filename = this.createFilename(!msg.properties ? 'none' : !msg.properties.name ? 'noname' : msg.properties.name, 'geojson');
-    fs.writeFile(filename, JSON.stringify(msg), err => {
+    if (msg.geojson) {
+      this.writeGeojsonEnvelope(msg.geojson, filename);
+    }
+  }
+
+  private writeGeojsonEnvelope(geojson: FeatureCollection, filename: string) {
+    delete geojson.bbox;
+    if (geojson.features)
+      geojson.features.forEach(f => {
+        delete f.bbox;
+        if (!f.geometry.type) {
+          const keys = Object.keys(f.geometry.type);
+          if (keys.length >= 1) f.geometry = f.geometry[keys[0]];
+        }
+      });
+    fs.writeFile(filename, JSON.stringify(geojson), err => {
       if (err) console.error(`Error saving ${filename}: ${err.message}!`);
       console.log(`Wrote ${filename}`);
     });

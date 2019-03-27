@@ -1,6 +1,6 @@
 {
-  "name": "wms_lite",
-  "version": "0.0.3",
+  "name": "test-bed-wms-service",
+  "version": "0.0.1",
   "repository": {
     "url": "https://github.com/DRIVER-EU"
   },
@@ -14,7 +14,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "wms_lite": "./bin/run.js"
+    "test-bed-wms-service": "./bin/run.js"
   },
   "keywords": [
     "wms",

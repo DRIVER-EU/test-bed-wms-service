@@ -5,7 +5,6 @@ WORKDIR /code
 RUN npm i
 RUN npm i -g typescript
 RUN npm run build
-RUN tsc
 
 # FROM node:10.15-stretch-slim
 # RUN mkdir -p /server/node_modules
