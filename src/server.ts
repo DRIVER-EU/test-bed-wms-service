@@ -1,12 +1,11 @@
 import * as http from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
-import { Router } from './router';
-import { ICommandLineOptions } from './cli';
-import { IWmsQuery } from './models/wms-query';
-import { IWmsDescription } from './models/config';
-import { SlippyMap } from './utils/slippy-map';
-import { IpAddress } from './utils/utils';
+import {Router} from './router';
+import {ICommandLineOptions} from './cli';
+import {IWmsQuery} from './models/wms-query';
+import {SlippyMap} from './utils/slippy-map';
+import {IpAddress} from './utils/utils';
 
 const url = require('url');
 
@@ -51,7 +50,7 @@ export class Server {
       } = url.parse(req.url.toLowerCase(), true);
 
       if (uri.path === '/favicon.ico') {
-        res.writeHead(200, { 'Content-Type': 'image/x-icon' });
+        res.writeHead(200, {'Content-Type': 'image/x-icon'});
         res.end(favicon);
         return;
       }
@@ -59,11 +58,11 @@ export class Server {
       if (!uri.query) return;
 
       if (uri.query.request === 'getcapabilities') {
-        res.writeHead(200, { 
+        res.writeHead(200, {
           'Content-Type': 'text/xml',
           'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0'
+          Pragma: 'no-cache',
+          Expires: '0'
         });
         return res.end(this.router.getCapabilities());
       }
@@ -91,7 +90,7 @@ export class Server {
 
       console.error(`Received unhandled request: ${req.url}`);
       res.writeHead(500, {
-          'Content-Type': 'text/plain; charset=utf-8'
+        'Content-Type': 'text/plain; charset=utf-8'
       });
       res.end(`Received unhandled request: ${req.url}`);
     });
@@ -99,7 +98,8 @@ export class Server {
     server.listen(options.port, () => {
       let address = server.address();
       let ip = options.externalHost || IpAddress.get();
-      console.warn('Listening at %s:%d', ip, address.port);
+      const port = typeof address === 'string' ? '?' : address.port;
+      console.warn('Listening at %s:%d', ip, port);
     });
   }
 
@@ -109,14 +109,14 @@ export class Server {
         res.writeHead(500, {
           'Content-Type': 'text/plain; charset=utf-8'
         });
-        res.end(err ? err.stack : 'Rendering didn\'t produce a proper tile');
+        res.end(err ? err.stack : "Rendering didn't produce a proper tile");
       } else {
         res.writeHead(200, {
           'Content-Length': tile.length,
           'Content-Type': 'image/png',
           'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0'
+          Pragma: 'no-cache',
+          Expires: '0'
         });
         res.end(tile);
       }
@@ -125,17 +125,14 @@ export class Server {
 
   /**
    * Check whether the buffer contains a valid PNG.
-   * 
+   *
    * @private
    * @param {Buffer} data
    * @returns
-   * 
+   *
    * @memberOf Server
    */
   private isPNG(data: Buffer) {
-    return data[0] === 0x89 && data[1] === 0x50 && data[2] === 0x4E &&
-      data[3] === 0x47 && data[4] === 0x0D && data[5] === 0x0A &&
-      data[6] === 0x1A && data[7] === 0x0A;
+    return data[0] === 0x89 && data[1] === 0x50 && data[2] === 0x4e && data[3] === 0x47 && data[4] === 0x0d && data[5] === 0x0a && data[6] === 0x1a && data[7] === 0x0a;
   }
-
 }

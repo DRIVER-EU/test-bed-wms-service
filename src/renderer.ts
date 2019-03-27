@@ -2,11 +2,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Pool } from './pool';
 import { IWmsQuery } from './models/wms-query';
-const mapnik = require('mapnik');
+const mapnik = (process.platform === "win32" ? null : require('mapnik'));
 
 // register fonts and datasource plugins
-mapnik.register_default_fonts();
-mapnik.register_default_input_plugins();
+if (mapnik) mapnik.register_default_fonts();
+if (mapnik) mapnik.register_default_input_plugins();
 
 export class Renderer {
   private maps: Pool;
@@ -26,7 +26,9 @@ export class Renderer {
         strict: true,
         base: path.dirname(stylesheet)
       }, (err, map) => {
-        if (err) throw err;
+        if (err) {
+          return console.error(err);
+        }
         map.zoomAll();
         created++;
         console.log(`\rCreating map objects (${created}/${concurrency})...`);

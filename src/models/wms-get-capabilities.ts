@@ -11,9 +11,10 @@ import { IDatasource, IDatasourceService } from '../models/datasource';
  * @class WmsGetCapbilities
  */
 export class WmsGetCapbilities {
-  static create(d: IWmsDescription, port: number, datasources: IDatasource[], externalHostname?: string) {
+  static create(d: IWmsDescription, port: number, datasources: IDatasource[], externalHostname?: string, externalPort?: number) {
     let keywords = d.keywords.reduce((a, b) => { return `${a}<Keyword>${b}</Keyword>`; }, '');
     let hostname = externalHostname || IpAddress.get();
+    let portname = externalPort || port;
     let layers = '';
     datasources.forEach(ds => {
       layers += WmsGetCapbilities.createLayer(ds.title, ds.layerID, d.boundaryBox);
@@ -28,7 +29,7 @@ export class WmsGetCapbilities {
     <KeywordList>
       ${keywords}
     </KeywordList>
-    <OnlineResource xlink:href="${hostname}:${port}/" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+    <OnlineResource xlink:href="${hostname}:${portname}/" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
     <ContactInformation>
       <ContactPersonPrimary>
         <ContactPerson>${d.contact.person}</ContactPerson>
@@ -56,7 +57,7 @@ export class WmsGetCapbilities {
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xlink:href="${hostname}:${port}/${d.path ? d.path + '/' : ''}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+              <OnlineResource xlink:href="${hostname}:${portname}/${d.path ? d.path + '/' : ''}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
             </Get>
           </HTTP>
         </DCPType>
@@ -66,7 +67,7 @@ export class WmsGetCapbilities {
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xlink:href="${hostname}:${port}/${d.path ? d.path + '/' : ''}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+              <OnlineResource xlink:href="${hostname}:${portname}/${d.path ? d.path + '/' : ''}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
             </Get>
           </HTTP>
         </DCPType>
@@ -108,9 +109,10 @@ ${layers}    </Layer>
 `;
   }
 
-  static create_v130(d: IWmsDescription, port: number) {
+  static create_v130(d: IWmsDescription, port: number, externalHostname?: string, externalPort?: number) {
     let keywords = d.keywords.reduce((a, b) => { return `${a}<Keyword>${b}</Keyword>\r`; }, '');
-    let hostname = IpAddress.get();
+    let hostname = externalHostname || IpAddress.get();
+    let portname = externalPort || port;
     let xml = `<?xml version="1.0" encoding="utf-8"?>
 <WMS_Capabilities version="1.3.0" xmlns="http://www.opengis.net/wms"
   xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -151,7 +153,7 @@ ${layers}    </Layer>
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xlink:href="${hostname}:${port}/${d.path ? d.path + '/' : ''}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+              <OnlineResource xlink:href="${hostname}:${portname}/${d.path ? d.path + '/' : ''}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
             </Get>
           </HTTP>
         </DCPType>
@@ -161,7 +163,7 @@ ${layers}    </Layer>
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xlink:href="${hostname}:${port}/${d.path ? d.path + '/' : ''}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+              <OnlineResource xlink:href="${hostname}:${portname}/${d.path ? d.path + '/' : ''}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
             </Get>
           </HTTP>
         </DCPType>

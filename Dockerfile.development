@@ -1,0 +1,8 @@
+FROM node:8.15-stretch as builder
+RUN mkdir -p ./code
+COPY . /code
+WORKDIR /code
+RUN npm i
+RUN npm i -g typescript
+RUN npm run build
+RUN tsc

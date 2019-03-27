@@ -3,4 +3,7 @@ dist
 typings
 data
 styles/generated
+demo/*.geojson
+.vscode/launch.json
+wms.img
 log.txt

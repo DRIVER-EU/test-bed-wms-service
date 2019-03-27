@@ -1,13 +1,13 @@
 ---
-version: '2'
+version: '3'
 services:
-  wmsserver:
-    build: https://github.com/DRIVER-EU/test-bed-wms-service.git#v0.0.2
-    hostname: wmsserver
+  wms-server:
+    hostname: wms-server
+    image: wms-server
     ports:
-      - "3355:3355"
+      - 5101:5101
+    volumes:
+      - .:/code
+    restart: unless-stopped
     environment:
-      WMS_PORT: '3355'
-      GDAL_DATA: '/usr/share/gdal/2.2'
-      PROJ_LIB: './src/nad'
-
+      WMS_PORT: '5101'

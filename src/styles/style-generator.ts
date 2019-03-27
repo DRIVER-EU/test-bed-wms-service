@@ -81,7 +81,7 @@ ${layers}
 </Map>`;
 
     let stylesheet = path.join(this.generatedStyleFolder, styleName + '.xml');
-    fs.writeFileSync(stylesheet, style, 'utf8');
+    fs.writeFileSync(stylesheet, style, {encoding: 'utf8'});
     return stylesheet;
   }
 

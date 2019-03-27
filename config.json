@@ -1,11 +1,12 @@
 {
   "debugMode": true,
+  "folder": "./demo",
+  "port": 5101,
   "wmsDescription": {
     "title": "TNO WMS service",
     "abstract": "A WMS service for crisis management",
     "keywords": ["WMS", "Crisis management", "Kafka", "Driver"],
-    "boundaryBox":
-      "      <LatLonBoundingBox maxy=\"7.273103484702655\" maxx=\"53.56324764934842\" miny=\"50.671799068129744\" minx=\"3.199769363476108\"/>\n      <BoundingBox SRS=\"EPSG:4326\" minx=\"3.1983876629326096\" miny=\"50.67199330930464\" maxx=\"7.276276007218319\" maxy=\"53.611058210234226\"/>\n      <BoundingBox SRS=\"EPSG:28992\" minx=\"198.35995763429673\" miny=\"297982.12118999794\" maxx=\"288467.017801902\" maxy=\"627198.177920129\"/>\n      <BoundingBox SRS=\"EPSG:3857\" minx=\"356196\" miny=\"6563442\" maxx=\"809638\" maxy=\"7087870\"/>",
+    "boundaryBox": "      <LatLonBoundingBox maxy=\"7.273103484702655\" maxx=\"53.56324764934842\" miny=\"50.671799068129744\" minx=\"3.199769363476108\"/>\n      <BoundingBox SRS=\"EPSG:4326\" minx=\"3.1983876629326096\" miny=\"50.67199330930464\" maxx=\"7.276276007218319\" maxy=\"53.611058210234226\"/>\n      <BoundingBox SRS=\"EPSG:28992\" minx=\"198.35995763429673\" miny=\"297982.12118999794\" maxx=\"288467.017801902\" maxy=\"627198.177920129\"/>\n      <BoundingBox SRS=\"EPSG:3857\" minx=\"356196\" miny=\"6563442\" maxx=\"809638\" maxy=\"7087870\"/>",
     "contact": {
       "person": "Erik Vullings",
       "organization": "TNO",
@@ -13,7 +14,7 @@
       "address": "Oude Waalsdorperweg 63",
       "city": "The Hague",
       "state": "Holland",
-      "postcode": "2563AK",
+      "postcode": "2597AK",
       "country": "The Netherlands",
       "telephone": "06-12345678",
       "email": "Erik.Vullings@TNO.nl"
@@ -23,9 +24,37 @@
       "url": "http://www.tno.nl"
     }
   },
+  "testbed": {
+    "testbedOptions": {
+      "kafkaHost": "driver-testbed.eu:3501",
+      "schemaRegistry": "http://driver-testbed.eu:3502",
+      "kafkaHost": "tb5.driver-testbed.eu:3551",
+      "schemaRegistry": "http://tb5.driver-testbed.eu:3552",
+      "kafkaHost": "tb4.driver-testbed.eu:3541",
+      "schemaRegistry": "http://tb4.driver-testbed.eu:3542",
+      "kafkaHost": "localhost:3501",
+      "schemaRegistry": "http://localhost:3502",
+      "fetchAllSchemas": false,
+      "fetchAllVersions": false,
+      "ignoreTimeTopic": true,
+      "wrapUnions": "auto",
+      "clientId": "wms-service",
+      "consume": [{"topic": "lcms_plots", "offset": 0}, {"topic": "standard_cap", "offset": 99999}],
+      "produce": ["standard_cap"],
+      "autoRegisterSchemas": true,
+      "schemaFolder": "./schemas",
+      "fromOffset": true,
+      "logging": {
+        "logToConsole": 2,
+        "logToFile": 2,
+        "logToKafka": 3,
+        "logFile": "log.txt"
+      }
+    }
+  },
+  "zookeeperUrl": "217.169.227.210:3333",
   "clientID": "kafka2wms",
-  "kafkaHost": "broker:3501",
-  "schemaRegistry": "schema_registry:3502",
-  "fetchAllSchemas": false,
-  "consume": [{"topic": "cap"}]
+  "consumeTopics": {
+    "gps.actual": "geojson"
+  }
 }
