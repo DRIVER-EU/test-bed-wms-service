@@ -8,7 +8,7 @@ Each GIS file that is served needs to have a specific Mapnik XML configuration: 
 
 Ru directly through Docker with the command: 
 ```
-docker run -p 5101:5101 -v ${PWD}/demo:/server/data drivereu/test-bed-wms-service
+docker run -p 5101:5101 -v ${PWD}/demo:/server/data -v ${PWD}/config.json:/server/config.json drivereu/test-bed-wms-service
 ```
 
 Or for development:
