@@ -6,6 +6,12 @@ Each GIS file that is served needs to have a specific Mapnik XML configuration: 
 
 # Installation
 
+Ru directly through Docker with the command: 
+```
+docker run -p 5101:5101 -v ${PWD}/demo:/server/data drivereu/test-bed-wms-service
+```
+
+Or for development:
 Run and transpile the typescript code to javascript. 
 ```console
 npm i && typings i
@@ -84,3 +90,4 @@ To run the compiled code, run in the docker container:
 ```
 node dist/cli -t -f demo -e "http://localhost" -q 5101
 ```
+
