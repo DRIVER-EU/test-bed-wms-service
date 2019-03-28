@@ -1,9 +1,10 @@
 FROM node:8.15-stretch as builder
+RUN npm i -g typescript
 RUN mkdir -p ./code
-COPY . /code
+COPY package.json /code/package.json
 WORKDIR /code
 RUN npm i
-RUN npm i -g typescript
+COPY . .
 RUN npm run build
 
 # FROM node:10.15-stretch-slim
