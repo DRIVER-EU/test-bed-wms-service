@@ -118,62 +118,31 @@ ${layers}
 </Style>
 <Style name="${layer}-icon" filter-mode="first">
   <Rule>
-    <MaxScaleDenominator>100000</MaxScaleDenominator>
-    <Filter>([state] = 2)</Filter>
-    <MarkersSymbolizer width="24" fill="#ff0000" file="../icons/${layer}.svg" />
+    <Filter>([state] = 2) and ([mapnik::geometry_type]=point)</Filter>
+    <MarkersSymbolizer width="20" fill="#ff0000" file="../icons/${layer}.svg" />
   </Rule>
   <Rule>
-    <MaxScaleDenominator>750000</MaxScaleDenominator>
-    <MinScaleDenominator>100000</MinScaleDenominator>
-    <Filter>([state] = 2)</Filter>
-    <MarkersSymbolizer width="18" fill="#ff0000" file="../icons/${layer}.svg" />
+    <Filter>([mapnik::geometry_type]=point)</Filter> 
+    <MarkersSymbolizer width="20" file="../icons/${layer}.svg" />
   </Rule>
+</Style>
+<Style name="${layer}-polygon">
   <Rule>
-    <MinScaleDenominator>750000</MinScaleDenominator>
-    <Filter>([state] = 2)</Filter>
-    <MarkersSymbolizer fill="#ff0000" width="14" file="../icons/${layer}.svg" />
-  </Rule>
-  <Rule>
-    <MaxScaleDenominator>100000</MaxScaleDenominator>
-    <Filter>([state] = 1)</Filter>
-    <MarkersSymbolizer width="24" fill="#ffc859" file="../icons/${layer}.svg" />
-  </Rule>
-  <Rule>
-    <MaxScaleDenominator>750000</MaxScaleDenominator>
-    <MinScaleDenominator>100000</MinScaleDenominator>
-    <Filter>([state] = 1)</Filter>
-    <MarkersSymbolizer width="18" fill="#ffc859" file="../icons/${layer}.svg" />
-  </Rule>
-  <Rule>
-    <MinScaleDenominator>750000</MinScaleDenominator>
-    <Filter>([state] = 1)</Filter>
-    <MarkersSymbolizer fill="#ffc859" width="14" file="../icons/${layer}.svg" />
-  </Rule>
-  <Rule>
-    <MaxScaleDenominator>100000</MaxScaleDenominator>
-    <MarkersSymbolizer width="24" file="../icons/${layer}.svg" />
-  </Rule>
-  <Rule>
-    <MaxScaleDenominator>750000</MaxScaleDenominator>
-    <MinScaleDenominator>100000</MinScaleDenominator>
-    <MarkersSymbolizer width="18" file="../icons/${layer}.svg" />
-  </Rule>
-  <Rule>
-    <MinScaleDenominator>750000</MinScaleDenominator>
-    <MarkersSymbolizer width="14" file="../icons/${layer}.svg" />
+    <PolygonSymbolizer fill-opacity="0.5" fill="blue"/>
   </Rule>
 </Style>
 <Layer name="${layer}"
   srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs">
     <StyleName>${layer}-icon</StyleName>
     <StyleName>${layer}-label</StyleName>
+    <StyleName>${layer}-polygon</StyleName>
     <Datasource>
        <Parameter name="file"><![CDATA[${filename}]]></Parameter>
        <Parameter name="layer"><![CDATA[OGRGeoJSON]]></Parameter>
        <Parameter name="id"><![CDATA[${layer}]]></Parameter>
        <Parameter name="project"><![CDATA[{{STYLENAME}}]]></Parameter>
        <Parameter name="srs"><![CDATA[]]></Parameter>
-       <Parameter name="type"><![CDATA[ogr]]></Parameter>
+       <Parameter name="type"><![CDATA[geojson]]></Parameter>
     </Datasource>
   </Layer>
 `;
