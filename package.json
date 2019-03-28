@@ -1,16 +1,17 @@
 {
   "name": "test-bed-wms-service",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "repository": {
-    "url": "https://github.com/DRIVER-EU"
+    "url": "https://github.com/DRIVER-EU/test-bed-wms-service"
   },
   "description": "A Mapnik-based WMS service that watches a folder with GeoJSON files and publishes them as WMS. Each GeoJSON file that is served needs to have a Mapnik XML configuration, as can be seen in the styles folder. Besides support for WMS v1.1.1, it also offers support for accessing files as tile layer, e.g. http://HOST:PORT/LAYERNAMES/zoom/x/y.png",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && npm run copy-config && npm run copy-html && npm run copy-schemas",
+    "build": "tsc && npm run copy-config && npm run copy-html && npm run copy-schemas && npm run copy-styles",
     "copy-config": "cpx -u \"config.json\" dist",
     "copy-html": "cpx -u \"{palette.act,favicon.ico}\" dist",
     "copy-schemas": "cpx -u --include-empty-dirs \"schemas\" dist",
+    "copy-styles": "cpx -u \"styles\" dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {

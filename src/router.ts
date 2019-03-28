@@ -8,7 +8,7 @@ import { FolderDatasource } from './datasources/folder-datasource';
 import { KafkaDatasource } from './datasources/kafka-datasource';
 import { Renderer } from './renderer';
 import { IWmsQuery } from './models/wms-query';
-import { StyleGenerator } from './styles/style-generator';
+import { StyleGenerator } from './stylegenerators/style-generator';
 import { WmsGetCapbilities } from './models/wms-get-capabilities';
 import { TestbedDatasource } from './datasources/testbed-datasource';
 const mapnik = (process.platform === "win32" ? null : require('mapnik'));
