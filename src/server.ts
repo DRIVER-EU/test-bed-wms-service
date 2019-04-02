@@ -1,4 +1,5 @@
 import * as http from 'http';
+import * as cors from 'http-cors';
 import * as fs from 'fs';
 import * as path from 'path';
 import {Router} from './router';
@@ -8,6 +9,8 @@ import {SlippyMap} from './utils/slippy-map';
 import {IpAddress} from './utils/utils';
 
 const url = require('url');
+const corsUrl = process.env.WMS_CORS_ORIGIN || '*';
+const corsHeaders = process.env.WMS_CORS_HEADERS;
 
 export class Server {
   private router: Router;
@@ -49,21 +52,44 @@ export class Server {
         slashes: string;
       } = url.parse(req.url.toLowerCase(), true);
 
+      const headers = {
+        'Access-Control-Allow-Origin': corsUrl,
+        'Access-Control-Request-Method': '*',
+        'Access-Control-Allow-Methods': 'OPTIONS, GET, POST',
+        'Access-Control-Allow-Headers': corsHeaders || req.headers.origin,
+        'Access-Control-Allow-Credentials': 'true'
+      };
+
+      if (req.method === 'OPTIONS') {
+        res.writeHead(200, headers);
+        res.end();
+        return;
+      }
+
       if (uri.path === '/favicon.ico') {
-        res.writeHead(200, {'Content-Type': 'image/x-icon'});
+        res.writeHead(200, Object.assign(headers, {'Content-Type': 'image/x-icon'}));
         res.end(favicon);
+        return;
+      }
+
+      if (uri.path === '/wms/update/id') {
+        res.writeHead(200, Object.assign(headers, {'Content-Type': 'application/json'}));
+        res.end(JSON.stringify({app_id: 'wms-driver-plus'}));
         return;
       }
 
       if (!uri.query) return;
 
       if (uri.query.request === `getcapabilities`) {
-        res.writeHead(200, {
-          'Content-Type': 'text/xml',
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          Pragma: 'no-cache',
-          Expires: '0'
-        });
+        res.writeHead(
+          200,
+          Object.assign(headers, {
+            'Content-Type': 'text/xml',
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            Pragma: 'no-cache',
+            Expires: '0'
+          })
+        );
         return res.end(this.router.getCapabilities());
       }
 
@@ -74,9 +100,12 @@ export class Server {
 
       if (uri.query.request === `version`) {
         console.log(`URI: ${req.url}`);
-        res.writeHead(200, {
-          'Content-Type': 'text/plain; charset=utf-8'
-        });
+        res.writeHead(
+          200,
+          Object.assign(headers, {
+            'Content-Type': 'text/plain; charset=utf-8'
+          })
+        );
         return res.end('test-bed-wms-server version ...');
       }
 
@@ -97,13 +126,17 @@ export class Server {
       }
 
       console.error(`Received unhandled request on ${req.url} (${uri.query.request})`);
-      res.writeHead(500, {
-        'Content-Type': 'text/plain; charset=utf-8'
-      });
+      res.writeHead(
+        500,
+        Object.assign(headers, {
+          'Content-Type': 'text/plain; charset=utf-8'
+        })
+      );
       res.end(`Received unhandled request: ${req.url}`);
     });
 
     console.log('Start server on port %d', options.port);
+
     server.listen(options.port, () => {
       const ip = IpAddress.get();
       const address = server.address();

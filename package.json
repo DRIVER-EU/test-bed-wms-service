@@ -26,9 +26,11 @@
   "author": "Erik Vullings <erik.vullings@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "avsc": "^5.4.7",
     "chokidar": "^2.1.5",
     "command-line-args": "^3.0.5",
     "command-line-usage": "^3.0.8",
+    "http-cors": "^2.0.0",
     "kafka-node": "^3.0.1",
     "mapnik": "^3.7.2",
     "node-test-bed-adapter": "^0.8.6",
@@ -37,7 +39,7 @@
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.7",
-    "@types/node": "^11.11.7",
+    "@types/node": "^11.13.0",
     "cpx": "^1.5.0",
     "typescript": "^3.3.4000"
   }

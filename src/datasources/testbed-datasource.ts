@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import * as avsc from 'avsc';
 import {IConfig} from '../models/config';
 import {IKafkaMessage} from '../models/kafka_message';
 import {ICommandLineOptions} from '../cli';
@@ -114,6 +115,16 @@ export class TestbedDatasource {
         if (!f.geometry.type) {
           const keys = Object.keys(f.geometry);
           if (keys.length >= 1) f.geometry = f.geometry[keys[0]];
+        }
+        if (f.properties) {
+          Object.keys(f.properties).forEach(p => {
+              if (p.hasOwnProperty('string')) p = p['string'];
+              if (p.hasOwnProperty('int')) p = p['int'];
+              if (p.hasOwnProperty('float')) p = p['float'];
+              if (p.hasOwnProperty('double')) p = p['double'];
+              if (p.hasOwnProperty('long')) p = p['long'];
+              if (p.hasOwnProperty('boolean')) p = p['boolean'];
+          });
         }
       });
     fs.writeFile(filename, JSON.stringify(geojson), err => {

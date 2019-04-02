@@ -112,8 +112,8 @@ ${layers}
   private static createGeoJsonPointStyle(layer: string, filename: string, outputFile: string) {
     const newStyle = `<Style name="${layer}-label" filter-mode="first">
   <Rule>
-    <MaxScaleDenominator>12500</MaxScaleDenominator>
-    <TextSymbolizer fontset-name="fontset-0" fill="#888888" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" size="12" dy="18" ><![CDATA[[Name]]]></TextSymbolizer>
+    <MaxScaleDenominator>75000</MaxScaleDenominator>
+    <TextSymbolizer fontset-name="fontset-0" fill="#111111" halo-fill="rgba(255, 255, 255, 0.7)" halo-radius="2.5" size="12" dy="18" ><![CDATA[[Name]]]></TextSymbolizer>
   </Rule>
 </Style>
 <Style name="${layer}-icon" filter-mode="first">
