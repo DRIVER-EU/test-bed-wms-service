@@ -13,7 +13,7 @@ const stringify = (m: string | Object) => (typeof m === 'string' ? m : JSON.stri
 
 export class TestbedDatasource {
   private adapter: TestBedAdapter;
-  private id = 'wms-server';
+  private id = 'geojson-wms-gateway';
   private debugMode: boolean;
 
   constructor(private outputFolder: string, private options: ICommandLineOptions) {

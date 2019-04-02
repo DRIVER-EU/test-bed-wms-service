@@ -31,7 +31,7 @@
     "command-line-usage": "^3.0.8",
     "kafka-node": "^3.0.1",
     "mapnik": "^3.7.2",
-    "node-test-bed-adapter": "^0.7.6",
+    "node-test-bed-adapter": "^0.8.6",
     "url": "^0.11.0",
     "winston": "^2.4.4"
   },

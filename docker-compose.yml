@@ -1,13 +1,29 @@
 ---
 version: '3'
 services:
-  wms-server:
-    hostname: wms-server
-    image: wms-server
+  wms_service:
+    image: drivereu/test-bed-wms-service:1.0.5
+    hostname: wmsservice
+    environment:
+      URL: http://${TESTBED_HOST}/wms-service/
+      WMS_PORT: 5101
+      WMS_HOST: wmsservice
+      WMS_EXTERNAL_PORT: 5101
+      WMS_EXTERNAL_HOST: http://${TESTBED_HOST}/wms-service/
+      WMS_EXTERNAL_ADDRESS: http://${TESTBED_HOST}/wms-service/
+      WMS_KAFKA_HOST: broker:${BROKER_PORT}
+      WMS_SCHEMA_REGISTRY: http://schema_registry:${SCHEMA_REGISTRY_PORT}
     ports:
       - 5101:5101
-    volumes:
-      - .:/code
-    restart: unless-stopped
-    environment:
-      WMS_PORT: '5101'
+    depends_on:
+      - broker
+      - schema_registry
+    networks:
+      - traefik-net
+      - testbed-net
+    deploy:
+      labels:
+        - "traefik.port=5101"
+        - "traefik.enable=true"
+        - "traefik.docker.network=traefik-net"
+        - "traefik.frontend.rule=Host:${TESTBED_HOST};PathPrefix:/wms-service/"

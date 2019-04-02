@@ -57,7 +57,7 @@ export class Server {
 
       if (!uri.query) return;
 
-      if (uri.query.request === 'getcapabilities') {
+      if (uri.query.request === `getcapabilities`) {
         res.writeHead(200, {
           'Content-Type': 'text/xml',
           'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -67,9 +67,17 @@ export class Server {
         return res.end(this.router.getCapabilities());
       }
 
-      if (uri.query.request === 'getmap') {
+      if (uri.query.request === `getmap`) {
         console.log(`URI: ${req.url}`);
         return this.createTile(uri.query, res);
+      }
+
+      if (uri.query.request === `version`) {
+        console.log(`URI: ${req.url}`);
+        res.writeHead(200, {
+          'Content-Type': 'text/plain; charset=utf-8'
+        });
+        return res.end('test-bed-wms-server version ...');
       }
 
       // Try slippy map
@@ -88,16 +96,17 @@ export class Server {
         return this.createTile(query, res);
       }
 
-      console.error(`Received unhandled request: ${req.url}`);
+      console.error(`Received unhandled request on ${req.url} (${uri.query.request})`);
       res.writeHead(500, {
         'Content-Type': 'text/plain; charset=utf-8'
       });
       res.end(`Received unhandled request: ${req.url}`);
     });
 
+    console.log('Start server on port %d', options.port);
     server.listen(options.port, () => {
-      let address = server.address();
-      let ip = options.externalHost || IpAddress.get();
+      const ip = IpAddress.get();
+      const address = server.address();
       const port = typeof address === 'string' ? '?' : address.port;
       console.warn('Listening at %s:%d', ip, port);
     });

@@ -15,6 +15,7 @@ export class WmsGetCapbilities {
     let keywords = d.keywords.reduce((a, b) => { return `${a}<Keyword>${b}</Keyword>`; }, '');
     let hostname = externalHostname || IpAddress.get();
     let portname = externalPort || port;
+    let externalAddress = process.env.WMS_EXTERNAL_ADDRESS || `${hostname}:${portname}/`;
     let layers = '';
     datasources.forEach(ds => {
       layers += WmsGetCapbilities.createLayer(ds.title, ds.layerID, d.boundaryBox);
@@ -29,7 +30,7 @@ export class WmsGetCapbilities {
     <KeywordList>
       ${keywords}
     </KeywordList>
-    <OnlineResource xlink:href="${hostname}:${portname}/" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+    <OnlineResource xlink:href="${externalAddress}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
     <ContactInformation>
       <ContactPersonPrimary>
         <ContactPerson>${d.contact.person}</ContactPerson>
@@ -57,7 +58,7 @@ export class WmsGetCapbilities {
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xlink:href="${hostname}:${portname}/${d.path ? d.path + '/' : ''}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+              <OnlineResource xlink:href="${externalAddress}${d.path ? d.path + '/' : ''}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
             </Get>
           </HTTP>
         </DCPType>
@@ -67,7 +68,7 @@ export class WmsGetCapbilities {
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xlink:href="${hostname}:${portname}/${d.path ? d.path + '/' : ''}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+              <OnlineResource xlink:href="${externalAddress}${d.path ? d.path + '/' : ''}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
             </Get>
           </HTTP>
         </DCPType>
@@ -113,6 +114,7 @@ ${layers}    </Layer>
     let keywords = d.keywords.reduce((a, b) => { return `${a}<Keyword>${b}</Keyword>\r`; }, '');
     let hostname = externalHostname || IpAddress.get();
     let portname = externalPort || port;
+    let externalAddress = process.env.WMS_EXTERNAL_ADDRESS || `${hostname}:${portname}/`;
     let xml = `<?xml version="1.0" encoding="utf-8"?>
 <WMS_Capabilities version="1.3.0" xmlns="http://www.opengis.net/wms"
   xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -153,7 +155,7 @@ ${layers}    </Layer>
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xlink:href="${hostname}:${portname}/${d.path ? d.path + '/' : ''}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+              <OnlineResource xlink:href="${externalAddress}${d.path ? d.path + '/' : ''}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
             </Get>
           </HTTP>
         </DCPType>
@@ -163,7 +165,7 @@ ${layers}    </Layer>
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xlink:href="${hostname}:${portname}/${d.path ? d.path + '/' : ''}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+              <OnlineResource xlink:href="${externalAddress}${d.path ? d.path + '/' : ''}" xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink"/>
             </Get>
           </HTTP>
         </DCPType>

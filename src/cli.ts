@@ -153,6 +153,14 @@ options.config = config || ({} as IConfig);
 if (options.config.testbed && options.config.testbed.testbedOptions) {
   const sf = options.config.testbed.testbedOptions.schemaFolder;
   options.config.testbed.testbedOptions.schemaFolder = sf ? path.resolve(sf) : path.resolve('schemas');
+  options.config.testbed.testbedOptions.kafkaHost = process.env.WMS_KAFKA_HOST || options.config.testbed.testbedOptions.kafkaHost;
+  options.config.testbed.testbedOptions.schemaRegistry = process.env.WMS_SCHEMA_REGISTRY || options.config.testbed.testbedOptions.schemaRegistry;
 }
+
+options.port = +process.env.WMS_PORT || options.port;
+options.externalPort = +process.env.WMS_EXTERNAL_PORT || options.externalPort;
+options.externalHost = process.env.WMS_EXTERNAL_HOST || options.externalHost;
+options.folder = process.env.WMS_FOLDER || options.folder;
+
 if (options.config.debugMode) console.log(`Starting server with options: ${JSON.stringify(options, null, 2)}`);
 const server = new Server(options);
