@@ -112,7 +112,7 @@ export class TestbedDatasource {
       geojson.features.forEach(f => {
         delete f.bbox;
         if (!f.geometry.type) {
-          const keys = Object.keys(f.geometry.type);
+          const keys = Object.keys(f.geometry);
           if (keys.length >= 1) f.geometry = f.geometry[keys[0]];
         }
       });
