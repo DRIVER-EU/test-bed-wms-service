@@ -95,6 +95,7 @@ ${layers}    </Layer>
 </WMT_MS_Capabilities>
 `;
     console.log(xml);
+    console.log(`Created Capabilities for ${datasources.length} datasources`);
     return xml;
   }
 

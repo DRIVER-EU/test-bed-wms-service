@@ -1,10 +1,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as avsc from 'avsc';
+import Axios, {AxiosStatic, AxiosResponse, AxiosError} from 'axios';
 import {IConfig} from '../models/config';
 import {IKafkaMessage} from '../models/kafka_message';
 import {ICommandLineOptions} from '../cli';
-import {TestBedAdapter, ITestBedOptions, IAdapterMessage} from 'node-test-bed-adapter';
+import {TestBedAdapter, ITestBedOptions, IAdapterMessage, ILargeDataUpdate, DataType} from 'node-test-bed-adapter';
 import {INamedGeoJSON} from '../models/named-geojson';
 import {FeatureCollection} from 'geojson';
 
@@ -73,7 +73,7 @@ export class TestbedDatasource {
       case 'flood_actual_lcms':
       case 'flood_prediction_netcdf':
         // log(`Received flood_actual message with key ${stringify(message.key)}: ${stringify(message.value)}`);
-        // this.handleLargeDataMessage(message);
+        this.handleLargeDataMessage(message);
         break;
       default:
         log(`Received ${message.topic} message with key ${stringify(message.key)}: ${stringify(message.value)}`);
@@ -107,6 +107,26 @@ export class TestbedDatasource {
     }
   }
 
+  private handleLargeDataMessage(message: IAdapterMessage) {
+    console.log(`Received LargeDataUpdate`);
+    const msg: ILargeDataUpdate = message.value as ILargeDataUpdate;
+    if (msg.url && msg.dataType && msg.dataType === DataType.geojson) {
+      Axios.get(msg.url)
+        .then((body: AxiosResponse) => {
+          console.log(`Downloaded ${msg.title} ${msg.dataType}:`);
+          const filename = this.createFilename(msg.title, msg.dataType);
+          fs.writeFile(filename, JSON.stringify(body.data), err => {
+            if (err) console.error(`Error saving ${filename}: ${err.message}!`);
+            console.log(`Wrote ${filename}`);
+          });
+        })
+        .catch((err: AxiosError) => {
+          console.error(err.message);
+          console.log(err.config);
+        });
+    }
+  }
+
   private writeGeojsonEnvelope(geojson: FeatureCollection, filename: string) {
     delete geojson.bbox;
     if (geojson.features)
@@ -118,12 +138,12 @@ export class TestbedDatasource {
         }
         if (f.properties) {
           Object.keys(f.properties).forEach(p => {
-              if (p.hasOwnProperty('string')) p = p['string'];
-              if (p.hasOwnProperty('int')) p = p['int'];
-              if (p.hasOwnProperty('float')) p = p['float'];
-              if (p.hasOwnProperty('double')) p = p['double'];
-              if (p.hasOwnProperty('long')) p = p['long'];
-              if (p.hasOwnProperty('boolean')) p = p['boolean'];
+            if (f.properties[p].hasOwnProperty('string')) f.properties[p] = f.properties[p]['string'];
+            if (f.properties[p].hasOwnProperty('int')) f.properties[p] = f.properties[p]['int'];
+            if (f.properties[p].hasOwnProperty('float')) f.properties[p] = f.properties[p]['float'];
+            if (f.properties[p].hasOwnProperty('double')) f.properties[p] = f.properties[p]['double'];
+            if (f.properties[p].hasOwnProperty('long')) f.properties[p] = f.properties[p]['long'];
+            if (f.properties[p].hasOwnProperty('boolean')) f.properties[p] = f.properties[p]['boolean'];
           });
         }
       });
