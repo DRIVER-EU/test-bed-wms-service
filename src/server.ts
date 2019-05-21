@@ -72,7 +72,7 @@ export class Server {
         return;
       }
 
-      if (uri.path === '/wms/update/id' || uri.path === '/wms/wms/update/id') {
+      if (uri.path === '/update/id' || uri.path === '/wms/update/id' || uri.path === '/wms/wms/update/id') {
         res.writeHead(200, Object.assign(headers, {'Content-Type': 'application/json'}));
         res.end(JSON.stringify({app_id: 'wms-driver-plus'}));
         return;

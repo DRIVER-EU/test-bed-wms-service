@@ -101,9 +101,10 @@ export class TestbedDatasource {
   private handleGeoJSONMessage(message: IAdapterMessage) {
     console.log(`Received geojson`);
     const msg: INamedGeoJSON = message.value as INamedGeoJSON;
-    const filename = this.createFilename(!msg.properties ? 'none' : !msg.properties.name ? 'noname' : msg.properties.name, 'geojson');
+    const fileTitle = !msg.properties ? 'none' : !msg.properties.name ? 'noname' : msg.properties.name;
+    const filename = this.createFilename(fileTitle, 'geojson');
     if (msg.geojson) {
-      this.writeGeojsonEnvelope(msg.geojson, filename);
+      this.writeGeojsonEnvelope(msg.geojson, filename, fileTitle);
     }
   }
 
@@ -127,10 +128,10 @@ export class TestbedDatasource {
     }
   }
 
-  private writeGeojsonEnvelope(geojson: FeatureCollection, filename: string) {
+  private writeGeojsonEnvelope(geojson: FeatureCollection, filename: string, fileTitle: string) {
     delete geojson.bbox;
     if (geojson.features)
-      geojson.features.forEach(f => {
+      geojson.features.forEach((f, index) => {
         delete f.bbox;
         if (!f.geometry.type) {
           const keys = Object.keys(f.geometry);
@@ -145,6 +146,9 @@ export class TestbedDatasource {
             if (f.properties[p].hasOwnProperty('long')) f.properties[p] = f.properties[p]['long'];
             if (f.properties[p].hasOwnProperty('boolean')) f.properties[p] = f.properties[p]['boolean'];
           });
+          if (!f.properties.Name && f.properties.name) {
+            f.properties.Name = f.properties.name;
+          }
         }
       });
     fs.writeFile(filename, JSON.stringify(geojson), err => {
